@@ -29,7 +29,7 @@ func main() {
 }
 
 func runOneAPI() error {
-	token := "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" //os.Getenv("GITHUB_TOKEN")
+	token := os.Getenv("GITHUB_TOKEN")
 	if token == "" {
 		log.Fatal("Unauthorized: No token present")
 	}
@@ -122,7 +122,7 @@ func downloadFile(client *github.Client, owner, repo, path string) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		err = os.WriteFile("downloaded_file", []byte(content), 0644)
+		err = os.WriteFile(path, []byte(content), 0644)
 		if err != nil {
 			log.Fatal(err)
 		}
