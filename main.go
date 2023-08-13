@@ -98,12 +98,27 @@ func uploadFile(client *github.Client, owner, repo, path string, content []byte)
 	ctx := context.Background()
 	message := "备份时间：" + time.Now().Format("2006-01-02 15:04:05")
 	branch := "main"
+
+	fileContent, _, _, err := client.Repositories.GetContents(ctx, owner, repo, path, &github.RepositoryContentGetOptions{})
+	if err != nil && err.Error() != "Not Found" {
+		log.Fatal(err)
+	}
+
 	opts := &github.RepositoryContentFileOptions{
 		Message: &message,
 		Content: content,
 		Branch:  &branch,
 	}
-	_, _, err := client.Repositories.CreateFile(ctx, owner, repo, path, opts)
+
+	if err != nil && err.Error() == "Not Found" {
+		// File doesn't exist, create it
+		_, _, err = client.Repositories.CreateFile(ctx, owner, repo, path, opts)
+	} else {
+		// File exists, update it
+		opts.SHA = fileContent.SHA
+		_, _, err = client.Repositories.UpdateFile(ctx, owner, repo, path, opts)
+	}
+
 	if err != nil {
 		log.Fatal(err)
 	}
