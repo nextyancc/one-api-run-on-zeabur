@@ -44,7 +44,7 @@ func runOneAPI() error {
 	downloadFile(client, owner, repo, oneAPIDBName)
 	fmt.Printf("下载完成%s..\n", oneAPIDBName)
 	go func() {
-		ticker := time.NewTicker(time.Minute * 1)
+		ticker := time.NewTicker(time.Hour * 1)
 		// 使用一个无限循环执行定时任务
 		for {
 			select {
