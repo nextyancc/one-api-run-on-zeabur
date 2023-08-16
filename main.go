@@ -41,21 +41,23 @@ func runOneAPI() error {
 	client := github.NewClient(tc)
 	downloadFile(client, owner, repo, oneAPIFileName)
 	fmt.Printf("下载完成%s..\n", oneAPIFileName)
-	downloadFile(client, owner, repo, oneAPIDBName)
-	fmt.Printf("下载完成%s..\n", oneAPIDBName)
-	go func() {
-		ticker := time.NewTicker(time.Hour * 1)
-		// 使用一个无限循环执行定时任务
-		for {
-			select {
-			case <-ticker.C:
-				content, _ := os.ReadFile(oneAPIDBName)
-				uploadFile(client, owner, repo, oneAPIDBName, content)
-				fmt.Println("上传完成..")
-			}
-		}
+	// downloadFile(client, owner, repo, oneAPIDBName)
+	// fmt.Printf("下载完成%s..\n", oneAPIDBName)
+	// go func() {
+	// 	ticker := time.NewTicker(time.Hour * 1)
+	// 	// 使用一个无限循环执行定时任务
+	// 	for {
+	// 		select {
+	// 		case <-ticker.C:
+	// 			content, _ := os.ReadFile(oneAPIDBName)
+	// 			uploadFile(client, owner, repo, oneAPIDBName, content)
+	// 			fmt.Println("上传完成..")
+	// 		}
+	// 	}
 
-	}()
+	// }()
+
+	// 以下是下载github公共仓库文件
 	// if err := downloadOneAPI(oneAPIFileName, oneAPIURL); err != nil {
 	// 	return fmt.Errorf("download error: %w", err)
 	// }
